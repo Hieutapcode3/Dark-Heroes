@@ -6,7 +6,7 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] private float Speed = 1.5f;
     [SerializeField] private float CurrentTime ;
-    [SerializeField] private float RangeTime = 2f ;
+    [SerializeField] private float RangeTime = 3f ;
     protected Rigidbody2D rb;
     protected SpriteRenderer spriteRenderer;
     protected Animator anim;
