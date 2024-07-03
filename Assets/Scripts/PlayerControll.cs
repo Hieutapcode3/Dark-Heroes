@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class PlayerControll : MonoBehaviour
+public class PlayerControll : MonoBehaviour,ITakeDamage
 {
     [Header("For Movement")]
     [SerializeField] float      moveSpeed = 5f;
@@ -34,20 +36,24 @@ public class PlayerControll : MonoBehaviour
     private int                 currentAttack = 0;
     private float               timeAttack = 0.0f;
     private bool                isAttacking;
+    private int                 attackDamage = 10;
+    public Transform            attackPoint;
+    public float                attackRange = 0.5f;
+    public LayerMask            enemyLayer;
 
     [Header("For Dashing")]
     private float               timeDashing =0.2f;
     private bool                canDash = true;
     [SerializeField] float      dashingPower = 30f;
-    private bool                isDashing;
     private float               dashingCooldown = 1f;
-
-
 
     [Header("Other")]
     private Rigidbody2D         rb;
     private Animator            anim;
     private Ghost               ghost;
+    public int                  health = 100;
+    [SerializeField] Slider     slide;
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -64,7 +70,6 @@ public class PlayerControll : MonoBehaviour
         Inputs();
         CheckWorld();
         Attack();
-
     }
     private void FixedUpdate()
     {
@@ -163,6 +168,7 @@ public class PlayerControll : MonoBehaviour
     }
     private void Attack()
     {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
         timeAttack += Time.deltaTime;
         if (Input.GetMouseButtonDown(0) && timeAttack > 0.55f && grounded) 
         {
@@ -174,9 +180,14 @@ public class PlayerControll : MonoBehaviour
                 currentAttack = 1;
             anim.SetTrigger("Attack" + currentAttack);
             timeAttack = 0.0f;
+            foreach (Collider2D enemyhit in hitEnemies)
+            {
+                enemyhit.GetComponent<EnemyController>().takeDamage(attackDamage);
+            }
         }
         if(timeAttack > 0.7f)
             isAttacking = false;
+        
     }
     private IEnumerator Dash()
     {
@@ -189,20 +200,32 @@ public class PlayerControll : MonoBehaviour
             else
                 rb.velocity = new Vector2(-transform.localScale.x * dashingPower, 0f);
             canDash = false;
-            isDashing = true;
             float originGra = rb.gravityScale;
             rb.gravityScale = 0f;
             yield return new WaitForSeconds(timeDashing);
             rb.gravityScale = originGra;
-            isDashing = false;
             yield return new WaitForSeconds(dashingCooldown);
             canDash = true;
             ghost.makeGhost = false;
         }
     }
-    private void Hurt()
+    public void takeDamage(int damage)
     {
-
+        anim.SetTrigger("Hurt");
+        health -= damage;
+        slide.value = health;
+        if(health <= 0)
+        {
+            StartCoroutine(Death());
+        }
+    }
+    private IEnumerator Death()
+    {
+        anim.SetTrigger("Death");
+        anim.SetBool("run", false);
+        this.enabled = false;
+        yield return new WaitForSeconds(1.2f);
+        SceneManager.LoadScene("GameoverScenes");
     }
     private void OnDrawGizmosSelected()
     {
@@ -210,5 +233,15 @@ public class PlayerControll : MonoBehaviour
         Gizmos.DrawCube(groundCheckPoint.position, groundCheckSize);
         Gizmos.color = Color.red;
         Gizmos.DrawCube(wallCheckPoint.position, wallCheckSize);
+        if (attackPoint == null) return;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Trap"))
+        {
+            takeDamage(10);
+        }
+    }
+
 }

@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 524447855380744994}
   - component: {fileID: 524447855380744993}
   - component: {fileID: 524447855380744992}
-  - component: {fileID: 1729105153}
   - component: {fileID: 1729105152}
-  m_Layer: 0
+  - component: {fileID: 1729105153}
+  - component: {fileID: 1729105151}
+  m_Layer: 11
   m_Name: Skeleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,6 +107,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!61 &1729105152
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524447855380744999}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.012012046, y: 0.00079122186}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.43, y: 0.37}
+    newSize: {x: 0.43, y: 0.37}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.23251823, y: 0.36841756}
+  m_EdgeRadius: 0
 --- !u!50 &1729105153
 Rigidbody2D:
   serializedVersion: 4
@@ -127,29 +154,32 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &1729105152
-BoxCollider2D:
+--- !u!114 &1729105151
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 524447855380744999}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.07912366, y: 0.0007912144}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.43, y: 0.37}
-    newSize: {x: 0.43, y: 0.37}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.2717527, y: 0.36841756}
-  m_EdgeRadius: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2c402ff902281b44938f8e3fa9c2c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 1.5
+  CurrentTime: 0
+  RangeTime: 2
+  attackCooldown: 2
+  range: 0.86
+  colliderDistance: 0.07
+  damage: 10
+  health: 30
+  boxCollider: {fileID: 1729105152}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  transformsPos:
+  - {fileID: 0}
+  - {fileID: 0}
+  player: {fileID: 0}
+  DamageTxt: {fileID: 873262160494877487, guid: 849fc04e54d746c47b8a281991d1efb5, type: 3}

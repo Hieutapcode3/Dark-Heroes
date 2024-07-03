@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 190610110}
   - component: {fileID: 190610112}
   - component: {fileID: 190610111}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 456775763}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WallCheckPoint
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
@@ -114,7 +114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 491190279}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GroundCheckPoint
   m_TagString: Untagged
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
@@ -145,7 +145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 702941530}
   - component: {fileID: 702941531}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Hearthbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,9 +219,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 20
+  m_MaxValue: 100
   m_WholeNumbers: 1
-  m_Value: 20
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 765667139}
   - component: {fileID: 765667141}
   - component: {fileID: 765667140}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,6 +300,36 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1071343451
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1071343452}
+  m_Layer: 7
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1071343452
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071343451}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.189, y: -0.028, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4909330100865726931}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1116555347
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,7 +342,7 @@ GameObject:
   - component: {fileID: 1116555351}
   - component: {fileID: 1116555350}
   - component: {fileID: 1116555349}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -332,7 +362,7 @@ RectTransform:
   m_Children:
   - {fileID: 702941530}
   m_Father: {fileID: 4909330100865726931}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -411,7 +441,7 @@ GameObject:
   - component: {fileID: 1566267947}
   - component: {fileID: 1566267949}
   - component: {fileID: 1566267948}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -490,7 +520,7 @@ GameObject:
   - component: {fileID: 4909330100865726956}
   - component: {fileID: 1499659681}
   - component: {fileID: 1056240400}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -510,6 +540,7 @@ Transform:
   m_Children:
   - {fileID: 456775763}
   - {fileID: 491190279}
+  - {fileID: 1071343452}
   - {fileID: 1116555348}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -636,7 +667,14 @@ MonoBehaviour:
   wallJumpForce: 11
   wallJumpDirection: -1
   wallJumpAngle: {x: 1, y: 3}
+  attackPoint: {fileID: 1071343452}
+  attackRange: 0.43
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 2048
   dashingPower: 30
+  health: 100
+  slide: {fileID: 702941531}
 --- !u!70 &1499659681
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
