@@ -50,7 +50,7 @@ public class EnemyAttack : MonoBehaviour
     {
         if (PlayerInSight())
         {
-            player.takeDamage(damage);
+            player.TakeDamage(damage);
         }
     }
     private void OnDrawGizmos()

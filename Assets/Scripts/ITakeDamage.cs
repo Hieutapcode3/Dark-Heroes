@@ -1,3 +1,3 @@
 public interface ITakeDamage{
-    void takeDamage(int damage);
+    void TakeDamage(int damage);
 }

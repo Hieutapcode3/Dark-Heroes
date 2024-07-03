@@ -27,6 +27,10 @@ public class PlayerControll : MonoBehaviour,ITakeDamage
     private bool                isTouchingWall;
     private bool                isWallSliding;
 
+    [Header("For Falling")]
+    private float               fallStartPosition;
+    private bool                isFalling;
+
     [Header("For WallJumping")]
     [SerializeField] float      wallJumpForce;
     [SerializeField] float      wallJumpDirection = -1f;
@@ -70,14 +74,14 @@ public class PlayerControll : MonoBehaviour,ITakeDamage
         Inputs();
         CheckWorld();
         Attack();
+        Fall();
     }
     private void FixedUpdate()
     {
         Movement();
         Jump();
-        WallSilde();
+        WallSlide();
         WallJump();
-        Fall();
         StartCoroutine(Dash());
 
     }
@@ -93,7 +97,7 @@ public class PlayerControll : MonoBehaviour,ITakeDamage
             if(isAttacking)
                 rb.velocity = new Vector2(horizontallInput * 1f, rb.velocity.y);
             else
-                rb.velocity = new Vector2(horizontallInput * moveSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(horizontallInput * moveSpeed, 0);
 
         }else if(!grounded && !isWallSliding && horizontallInput != 0)
         {
@@ -133,9 +137,44 @@ public class PlayerControll : MonoBehaviour,ITakeDamage
     }
     private void Fall()
     {
-        if (rb.velocity.y < 0 && !isTouchingWall)
+        if (rb.velocity.y < 0 && !isWallSliding && !isFalling)
         {
+            // Bắt đầu rơi
             anim.SetTrigger("Fall");
+            fallStartPosition = transform.position.y;
+            isFalling = true;
+        }
+        else if (rb.velocity.y >= 0 && isFalling && grounded)
+        {
+            // Dừng rơi (chạm đất hoặc ngừng rơi)
+            CheckFallDamage();
+            isFalling = false;
+        }
+    }
+    private void CheckFallDamage()
+    {
+        if (isWallSliding || !isFalling)
+        {
+            return; // Không tính toán thiệt hại khi đang WallSlide hoặc không rơi
+        }
+
+        float fallDistance = fallStartPosition - transform.position.y;
+
+        if (fallDistance >= 15f)
+        {
+            TakeDamage(100);
+            Debug.Log("-100hp");
+        }
+        else if (fallDistance >= 10f)
+        {
+            TakeDamage(50);
+            Debug.Log("-50hp");
+
+        }else if (fallDistance >= 5f)
+        {
+            TakeDamage(30);
+            Debug.Log("-30hp");
+
         }
     }
     private void CheckWorld()
@@ -144,16 +183,18 @@ public class PlayerControll : MonoBehaviour,ITakeDamage
         isTouchingWall = Physics2D.OverlapBox(wallCheckPoint.position, wallCheckSize, 0, wallLayer);
         anim.SetBool("Ground", grounded);
     }
-    private void WallSilde()
+    private void WallSlide()
     {
-        if (isTouchingWall && !grounded && horizontallInput !=0)
+        if (isTouchingWall && !grounded && horizontallInput != 0)
             isWallSliding = true;
         else
             isWallSliding = false;
         if (isWallSliding)
         {
-            rb.velocity = new Vector2(rb.velocity.x, -wallSlideSpeed);
+            isFalling = false;
+            rb.velocity = new Vector2(0, -wallSlideSpeed);
             anim.SetBool("WallSlide", true);
+            fallStartPosition = 0;
         }
         else
             anim.SetBool("WallSlide", false);
@@ -182,7 +223,7 @@ public class PlayerControll : MonoBehaviour,ITakeDamage
             timeAttack = 0.0f;
             foreach (Collider2D enemyhit in hitEnemies)
             {
-                enemyhit.GetComponent<EnemyController>().takeDamage(attackDamage);
+                enemyhit.GetComponent<EnemyController>().TakeDamage(attackDamage);
             }
         }
         if(timeAttack > 0.7f)
@@ -209,7 +250,7 @@ public class PlayerControll : MonoBehaviour,ITakeDamage
             ghost.makeGhost = false;
         }
     }
-    public void takeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         anim.SetTrigger("Hurt");
         health -= damage;
@@ -240,7 +281,7 @@ public class PlayerControll : MonoBehaviour,ITakeDamage
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Trap"))
         {
-            takeDamage(10);
+            TakeDamage(10);
         }
     }
 

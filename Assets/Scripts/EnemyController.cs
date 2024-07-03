@@ -81,7 +81,7 @@ public class EnemyController : MonoBehaviour,ITakeDamage
         }
     }
 
-    public void takeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         anim.SetTrigger("hit");
         health -= damage;
@@ -111,7 +111,7 @@ public class EnemyController : MonoBehaviour,ITakeDamage
     {
         if(PlayerInSight())
         {
-            player.takeDamage(damage);
+            player.TakeDamage(damage);
         }
     }
     private void ShowDamageTxt(int x)
