@@ -139,14 +139,12 @@ public class PlayerControll : MonoBehaviour,ITakeDamage
     {
         if (rb.velocity.y < 0 && !isWallSliding && !isFalling)
         {
-            // Bắt đầu rơi
             anim.SetTrigger("Fall");
             fallStartPosition = transform.position.y;
             isFalling = true;
         }
         else if (rb.velocity.y >= 0 && isFalling && grounded)
         {
-            // Dừng rơi (chạm đất hoặc ngừng rơi)
             CheckFallDamage();
             isFalling = false;
         }
@@ -155,9 +153,8 @@ public class PlayerControll : MonoBehaviour,ITakeDamage
     {
         if (isWallSliding || !isFalling)
         {
-            return; // Không tính toán thiệt hại khi đang WallSlide hoặc không rơi
+            return; 
         }
-
         float fallDistance = fallStartPosition - transform.position.y;
 
         if (fallDistance >= 15f)
